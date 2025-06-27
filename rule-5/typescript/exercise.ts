@@ -37,6 +37,12 @@ interface User {
     profile: Profile;
     subscription: Subscription;
     company: Company;
+
+    fullName()
+    subscriptionPlan();
+    language();
+    contactEmail();
+    email();
 }
 
 class Composer {
@@ -51,13 +57,13 @@ class Mailer {
 
 function sendWelcomeEmail(user: User, mailer: Mailer): string {
     const emailContent = `
-      <h1>Benvenuto ${user.profile.personalInfo.fullName}</h1>
-      <p>La tua iscrizione a ${user.subscription.plan.name} è confermata.</p>
-      <p>Il tuo profilo è configurato nella lingua ${user.profile.settings.preferences.language.label}.</p>
-      <p>Per assistenza contatta ${user.company.supportDepartment.contactInfo.primaryEmail.address}</p>
+      <h1>Benvenuto ${user.fullName()}</h1>
+      <p>La tua iscrizione a ${user.subscriptionPlan()} è confermata.</p>
+      <p>Il tuo profilo è configurato nella lingua ${user.language()}.</p>
+      <p>Per assistenza contatta ${user.contactEmail()}</p>
     `;
     return mailer.compose()
-        .to(user.profile.contactInfo.primaryEmail.address)
+        .to(user.email())
         .withSubject("Benvenuto!")
         .withContent(emailContent)
         .send();

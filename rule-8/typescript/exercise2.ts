@@ -1,3 +1,22 @@
+class OrderTracker {
+    constructor(
+        private loggingService:LoggingService,
+        private shippingService:ShippingService,
+        private analyticsService:AnalyticsService
+    ) {
+
+    }
+
+    track(order:Order) {
+        this.loggingService.log(`Tracciamento ordine: ${order.id}`);
+        const trackingInfo = this.shippingService.getTrackingInfo(order);
+        
+        this.analyticsService.track(order);
+
+        return trackingInfo;
+    }
+}
+
 class OrderManager {
     constructor(
         public orderRepository: any,
